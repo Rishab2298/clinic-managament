@@ -202,6 +202,15 @@ const App = () => {
         columns={mergedColumns}
         rowClassName="editable-row"
         pagination={false}
+        onRow={(record) => {
+          return {
+            onClick: () => {
+              if (!isEditing(record)) {
+                edit(record);
+              }
+            },
+          };
+        }}
       />
     </Form>
   );
