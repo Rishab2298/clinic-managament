@@ -1,0 +1,47 @@
+# Node.js dependencies
+node_modules/
+package-lock.json  # Include package-lock.json
+
+# Build files (for client-side code)
+/build
+
+# Environment configuration (for sensitive information)
+.env
+
+# IDE or editor-specific files
+.vscode/
+.idea/
+
+# Log files
+logs/
+
+# User-specific files
+.DS_Store
+
+# Operating System temporary files
+Thumbs.db
+
+# Compiled JavaScript (for server-side code)
+/dist
+
+# API documentation (if generated)
+apidoc/
+
+# macOS-specific files
+.DS_Store
+
+# Compiled binaries (for example, for native modules)
+/out/
+
+# Cache directories
+.cache/
+bower_components/
+
+# Output of `npm pack`
+*.tgz
+
+# Local SQLite database files
+*.sqlite
+
+# Editors
+*~

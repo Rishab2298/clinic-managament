@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { Form, Input, InputNumber, Popconfirm, Table, Typography } from "antd";
-
-let originData = [
+const originData = [
   {
-    key: Date.now().toString(), // Use a timestamp as a unique key
+    key: 0,
     medicine: "Something",
     dosage: "String",
     frequency: "2",
@@ -13,7 +12,6 @@ let originData = [
     instruction: "String",
   },
 ];
-
 const EditableCell = ({
   editing,
   dataIndex,
@@ -42,41 +40,23 @@ const EditableCell = ({
     </td>
   );
 };
-
 const App = () => {
   const [form] = Form.useForm();
   const [data, setData] = useState(originData);
   const [editingKey, setEditingKey] = useState("");
-
   const isEditing = (record) => record.key === editingKey;
 
   const edit = (record) => {
-    // Set the form fields' values for the row to be edited
     form.setFieldsValue({ ...record });
     setEditingKey(record.key);
   };
 
-  const remove = (key) => {
-    // Remove the row with the given key from the data
-    const newData = data.filter((item) => item.key !== key);
-    setData(newData);
-
-    // Also remove it from the originData
-    const newOriginData = originData.filter((item) => item.key !== key);
-    originData = newOriginData;
-  };
-
   const cancel = () => {
-    // Cancel editing, clear the form, and reset the editing key
-    form.resetFields();
     setEditingKey("");
   };
-
   const add = async () => {
-    form.resetFields();
-    // Add a new row with a unique key and default values
     const newRow = {
-      key: Date.now().toString(),
+      key: data.length,
       medicine: "",
       dosage: "",
       frequency: "",
@@ -85,38 +65,29 @@ const App = () => {
       startFrom: "",
       instruction: "",
     };
-
-    // Append the new row to the data
-    const newData = [...data, newRow];
-    setData(newData);
-
-    // Append it to the originData as well
-
-    // Set it as the currently editing row
+    setData([...data, newRow]);
     setEditingKey(newRow.key);
+    form.resetFields();
+  };
+  const remove = (key) => {
+    setData(data.filter((item) => item.key !== key));
+    setEditingKey("0a");
   };
 
   const save = async (key) => {
     try {
-      // Validate the form fields
       const row = await form.validateFields();
       const newData = [...data];
       const index = newData.findIndex((item) => key === item.key);
-
       if (index > -1) {
-        // If the row exists, update it with the new data
         const item = newData[index];
         newData.splice(index, 1, {
           ...item,
           ...row,
         });
-
-        // Update the data
         setData(newData);
-        // Reset the editing key
         setEditingKey("");
       } else {
-        // If the row doesn't exist, it's a new row. Add it to the data.
         newData.push(row);
         setData(newData);
         setEditingKey("");
@@ -125,7 +96,6 @@ const App = () => {
       console.log("Validate Failed:", errInfo);
     }
   };
-
   const columns = [
     {
       title: "Medicine Name",
@@ -164,7 +134,7 @@ const App = () => {
       editable: true,
     },
     {
-      title: "Operation",
+      title: "operation",
       dataIndex: "operation",
       render: (_, record) => {
         const editable = isEditing(record);
@@ -204,7 +174,6 @@ const App = () => {
       },
     },
   ];
-
   const mergedColumns = columns.map((col) => {
     if (!col.editable) {
       return col;
@@ -213,14 +182,13 @@ const App = () => {
       ...col,
       onCell: (record) => ({
         record,
-        inputType: col.dataIndex === "frequency" ? "number" : "text",
+        inputType: col.dataIndex === "age" ? "number" : "text",
         dataIndex: col.dataIndex,
         title: col.title,
         editing: isEditing(record),
       }),
     };
   });
-
   return (
     <Form form={form} component={false}>
       <Table
@@ -238,5 +206,4 @@ const App = () => {
     </Form>
   );
 };
-
 export default App;

@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { message } from "antd";
 import Prescription from "./prescription";
+
 const StartConsultation = () => {
   const params = useParams();
   const [patient, setPatient] = useState(null);
@@ -43,6 +44,7 @@ const StartConsultation = () => {
   return (
     <>
       <Layout patient={patient}>
+        <h4>Medications</h4>
         <Prescription />
       </Layout>
     </>
