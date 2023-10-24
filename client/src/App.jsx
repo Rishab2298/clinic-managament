@@ -11,7 +11,7 @@ message.config({
   top: 80, // Adjust the top position (optional)
   duration: 2, // Default duration for messages (optional)
   maxCount: 3, // Maximum number of messages displayed (optional)
-  rtl: true, // Enable RTL mode if needed (optional)
+
   prefixCls: "my-message", // Custom CSS prefix class (optional)
 });
 function App() {

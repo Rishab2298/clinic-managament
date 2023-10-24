@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+import { AutoComplete, Button, message, Modal } from "antd";
 import { Form, Input, InputNumber, Popconfirm, Table, Typography } from "antd";
+
 const originData = [
   {
     key: 0,
@@ -12,40 +14,135 @@ const originData = [
     instruction: "String",
   },
 ];
-const EditableCell = ({
-  editing,
-  dataIndex,
-  title,
-  inputType,
-  record,
-  index,
-  children,
-  ...restProps
-}) => {
-  const inputNode = inputType === "number" ? <InputNumber /> : <Input />;
-  return (
-    <td {...restProps}>
-      {editing ? (
-        <Form.Item
-          name={dataIndex}
-          style={{
-            margin: 0,
-          }}
-        >
-          {inputNode}
-        </Form.Item>
-      ) : (
-        children
-      )}
-    </td>
-  );
-};
-const App = () => {
+const medicines = [
+  {
+    value: "Burns Bay Road",
+  },
+  {
+    value: "Downing Street",
+  },
+  {
+    value: "Wall Street",
+  },
+  {
+    value: "Rishab",
+  },
+  {
+    value: "Trishla",
+  },
+  {
+    value: "Akash",
+  },
+  {
+    value: "Naman",
+  },
+  {
+    value: "Chirag",
+  },
+  {
+    value: "Kriti",
+  },
+  {
+    value: "Black",
+  },
+  {
+    value: "White",
+  },
+  {
+    value: "Brown",
+  },
+  {
+    value: "Yellow",
+  },
+  {
+    value: "Golden",
+  },
+  {
+    value: "Violet",
+  },
+  {
+    value: "Pink",
+  },
+  {
+    value: "Red",
+  },
+  {
+    value: "Purple",
+  },
+  {
+    value: "Green",
+  },
+
+  {
+    value: "Blue",
+  },
+];
+
+const Prescription = ({ onDataEntered }) => {
   const [form] = Form.useForm();
   const [data, setData] = useState(originData);
   const [editingKey, setEditingKey] = useState("");
+  const [open, setOpen] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  const [modalText, setModalText] = useState("Content of the modal");
   const isEditing = (record) => record.key === editingKey;
-
+  const showModal = () => {
+    setOpen(true);
+  };
+  const handleOk = () => {
+    setModalText("The modal will be closed after two seconds");
+    setConfirmLoading(true);
+    setTimeout(() => {
+      setOpen(false);
+      setConfirmLoading(false);
+    }, 2000);
+  };
+  const handleCancel = () => {
+    console.log("Clicked cancel button");
+    setOpen(false);
+  };
+  const EditableCell = ({
+    editing,
+    dataIndex,
+    title,
+    inputType,
+    record,
+    index,
+    children,
+    options,
+    ...restProps
+  }) => {
+    const inputNode =
+      inputType === "number" ? (
+        <InputNumber />
+      ) : (
+        <AutoComplete
+          notFoundContent={<Button onClick={showModal}>Add Option</Button>}
+          options={options}
+          allowClear={true}
+          placeholder={title}
+          filterOption={(inputValue, option) =>
+            option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+          }
+        />
+      );
+    return (
+      <td {...restProps}>
+        {editing ? (
+          <Form.Item
+            name={dataIndex}
+            style={{
+              margin: 0,
+            }}
+          >
+            {inputNode}
+          </Form.Item>
+        ) : (
+          children
+        )}
+      </td>
+    );
+  };
   const edit = (record) => {
     form.setFieldsValue({ ...record });
     setEditingKey(record.key);
@@ -74,9 +171,39 @@ const App = () => {
     setEditingKey("0a");
   };
 
+  // const save = async (key) => {
+  //   try {
+  //     const row = await form.validateFields();
+  //     const newData = [...data];
+  //     const index = newData.findIndex((item) => key === item.key);
+  //     if (index > -1) {
+  //       const item = newData[index];
+  //       newData.splice(index, 1, {
+  //         ...item,
+  //         ...row,
+  //       });
+  //       setData(newData);
+  //       setEditingKey("");
+  //     } else {
+  //       newData.push(row);
+  //       setData(newData);
+  //       setEditingKey("");
+  //     }
+  //   } catch (errInfo) {
+  //     console.log("Validate Failed:", errInfo);
+  //   }
+  // };
+
   const save = async (key) => {
     try {
       const row = await form.validateFields();
+      // Assuming that "row" contains the entered data you want to pass back
+
+      // Call the callback function with the data (if onDataEntered is provided as a prop)
+      if (onDataEntered) {
+        onDataEntered(row);
+      }
+
       const newData = [...data];
       const index = newData.findIndex((item) => key === item.key);
       if (index > -1) {
@@ -96,6 +223,7 @@ const App = () => {
       console.log("Validate Failed:", errInfo);
     }
   };
+
   const columns = [
     {
       title: "Medicine Name",
@@ -106,25 +234,25 @@ const App = () => {
     {
       title: "Dosage",
       dataIndex: "dosage",
-      width: "10%",
+      width: "12%",
       editable: true,
     },
     {
       title: "Frequency",
       dataIndex: "frequency",
-      width: "10%",
+      width: "12%",
       editable: true,
     },
     {
       title: "Timing",
       dataIndex: "timing",
-      width: "10%",
+      width: "12%",
       editable: true,
     },
     {
       title: "Duration",
       dataIndex: "duration",
-      width: "10%",
+      width: "12%",
       editable: true,
     },
     {
@@ -174,6 +302,7 @@ const App = () => {
       },
     },
   ];
+  //if data index is medicine then the setOption must be medicines
   const mergedColumns = columns.map((col) => {
     if (!col.editable) {
       return col;
@@ -186,33 +315,45 @@ const App = () => {
         dataIndex: col.dataIndex,
         title: col.title,
         editing: isEditing(record),
+        options: col.dataIndex === "medicine" ? medicines : "",
       }),
     };
   });
   return (
-    <Form form={form} component={false}>
-      <Table
-        components={{
-          body: {
-            cell: EditableCell,
-          },
-        }}
-        bordered
-        dataSource={data}
-        columns={mergedColumns}
-        rowClassName="editable-row"
-        pagination={false}
-        onRow={(record) => {
-          return {
-            onClick: () => {
-              if (!isEditing(record)) {
-                edit(record);
-              }
+    <>
+      <Form form={form} component={false}>
+        <Table
+          components={{
+            body: {
+              cell: EditableCell,
             },
-          };
-        }}
-      />
-    </Form>
+          }}
+          bordered
+          dataSource={data}
+          columns={mergedColumns}
+          rowClassName="editable-row"
+          pagination={false}
+          onRow={(record) => {
+            return {
+              onClick: () => {
+                if (!isEditing(record)) {
+                  edit(record);
+                }
+              },
+            };
+          }}
+        />
+      </Form>
+      <Modal
+        title="Title"
+        open={open}
+        onOk={handleOk}
+        confirmLoading={confirmLoading}
+        onCancel={handleCancel}
+      >
+        <p>{modalText}</p>
+      </Modal>
+    </>
   );
 };
-export default App;
+export default Prescription;

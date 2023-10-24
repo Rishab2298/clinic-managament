@@ -8,6 +8,15 @@ import Prescription from "./prescription";
 const StartConsultation = () => {
   const params = useParams();
   const [patient, setPatient] = useState(null);
+  const [enteredData, setEnteredData] = useState(null); // State to store the entered data
+
+  // Define a callback function to receive the data
+  const handleData = (data) => {
+    setEnteredData(data);
+    console.log("SetEntered data is : ", enteredData);
+    console.log("Data is :", data);
+  };
+
   useEffect(() => {
     const patientId = params.patientId;
     // Fetch patient data when the component mounts
@@ -45,7 +54,7 @@ const StartConsultation = () => {
     <>
       <Layout patient={patient}>
         <h4>Medications</h4>
-        <Prescription />
+        <Prescription onDataEntered={handleData} />
       </Layout>
     </>
   );
