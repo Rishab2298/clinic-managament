@@ -53,7 +53,6 @@ const StartConsultation = () => {
   return (
     <>
       <Layout patient={patient}>
-        <h4>Medications</h4>
         <Prescription onDataEntered={handleData} />
       </Layout>
     </>

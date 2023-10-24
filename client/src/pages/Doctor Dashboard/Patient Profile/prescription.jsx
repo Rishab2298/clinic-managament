@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { AutoComplete, Button, message, Modal } from "antd";
 import { Form, Input, InputNumber, Popconfirm, Table, Typography } from "antd";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 const originData = [
   {
@@ -167,8 +170,12 @@ const Prescription = ({ onDataEntered }) => {
     form.resetFields();
   };
   const remove = (key) => {
-    setData(data.filter((item) => item.key !== key));
-    setEditingKey("0a");
+    const newData = data.filter((item) => item.key !== key);
+    setData(newData);
+    setEditingKey("0");
+    if (onDataEntered) {
+      onDataEntered(newData);
+    }
   };
 
   // const save = async (key) => {
@@ -200,9 +207,6 @@ const Prescription = ({ onDataEntered }) => {
       // Assuming that "row" contains the entered data you want to pass back
 
       // Call the callback function with the data (if onDataEntered is provided as a prop)
-      if (onDataEntered) {
-        onDataEntered(row);
-      }
 
       const newData = [...data];
       const index = newData.findIndex((item) => key === item.key);
@@ -213,11 +217,15 @@ const Prescription = ({ onDataEntered }) => {
           ...row,
         });
         setData(newData);
+
         setEditingKey("");
       } else {
         newData.push(row);
         setData(newData);
         setEditingKey("");
+      }
+      if (onDataEntered) {
+        onDataEntered(newData);
       }
     } catch (errInfo) {
       console.log("Validate Failed:", errInfo);
@@ -258,46 +266,27 @@ const Prescription = ({ onDataEntered }) => {
     {
       title: "Instruction",
       dataIndex: "instruction",
-      width: "10%",
+      width: "12%",
       editable: true,
     },
     {
-      title: "operation",
+      title: "",
       dataIndex: "operation",
+      width: "5%",
+
       render: (_, record) => {
         const editable = isEditing(record);
-        return editable ? (
-          <span>
-            <Typography.Link
-              onClick={() => save(record.key)}
-              style={{
-                marginRight: 8,
-              }}
-            >
-              Save
-            </Typography.Link>
-            <Typography.Link
-              onClick={() => add()}
-              style={{
-                marginRight: 8,
-              }}
-            >
-              Add
-            </Typography.Link>
-            <Popconfirm
-              title="Sure to delete?"
-              onConfirm={() => remove(record.key)}
-            >
-              <a>Delete</a>
-            </Popconfirm>
-          </span>
-        ) : (
-          <Typography.Link
-            disabled={editingKey !== ""}
-            onClick={() => edit(record)}
-          >
-            Edit
-          </Typography.Link>
+        return (
+          <>
+            <span>
+              <Popconfirm
+                title="Sure to delete?"
+                onConfirm={() => remove(record.key)}
+              >
+                <FontAwesomeIcon icon={faTrash} />
+              </Popconfirm>
+            </span>
+          </>
         );
       },
     },
@@ -321,6 +310,24 @@ const Prescription = ({ onDataEntered }) => {
   });
   return (
     <>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: "10px 0",
+        }}
+      >
+        <h2>Medications</h2>
+        <Button
+          onClick={add}
+          icon={<FontAwesomeIcon icon={faPlus} />}
+          type="primary"
+        >
+          Medicine
+        </Button>
+      </div>
+
       <Form form={form} component={false}>
         <Table
           components={{
@@ -335,6 +342,11 @@ const Prescription = ({ onDataEntered }) => {
           pagination={false}
           onRow={(record) => {
             return {
+              onMouseLeave: () => {
+                if (isEditing(record)) {
+                  save(record.key);
+                }
+              },
               onClick: () => {
                 if (!isEditing(record)) {
                   edit(record);
