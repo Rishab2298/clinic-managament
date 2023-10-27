@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { message } from "antd";
 import Prescription from "./prescription";
+import Example from "./example";
 
 const StartConsultation = () => {
   const params = useParams();
@@ -11,7 +12,7 @@ const StartConsultation = () => {
   const [enteredData, setEnteredData] = useState(null); // State to store the entered data
 
   // Define a callback function to receive the data
-  const handleData = (data) => {
+  const handleMedicationData = (data) => {
     setEnteredData(data);
     console.log("SetEntered data is : ", enteredData);
     console.log("Data is :", data);
@@ -53,7 +54,8 @@ const StartConsultation = () => {
   return (
     <>
       <Layout patient={patient}>
-        <Prescription onDataEntered={handleData} />
+        {/*<Prescription onDataEntered={handleData} />*/}
+        <Example onDataEntered={handleMedicationData} />
       </Layout>
     </>
   );
