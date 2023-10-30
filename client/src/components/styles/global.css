@@ -1,19 +1,19 @@
 /* Scrollbar Track */
 ::-webkit-scrollbar {
     width: 6px; /* Adjust the width as needed */
-    background-color: #ffffff; /* White background */
+    background-color: #b5b5b5; /* White background */
   }
   
   /* Scrollbar Thumb */
   ::-webkit-scrollbar-thumb {
-    background-color: #efefef; /* Dark blue thumb color */
+    background-color: #b5b5b5; /* Dark blue thumb color */
     border: none; /* Remove the border */
     border-radius: 0; /* Remove the border-radius */
   }
   
   /* Scrollbar Track on Hover */
   ::-webkit-scrollbar-track:hover {
-    background-color: #f0f0f0; /* Light gray background on hover */
+    background-color: #b5b5b5; /* Light gray background on hover */
   }
   
   /* Scrollbar Thumb on Hover */

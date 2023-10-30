@@ -6,9 +6,44 @@
     padding: 5px 12px;
     cursor: pointer;
 }
+.editable-cell-value-wrap:empty::before {
+    content: "\200B"; /* Add an invisible character to enable styling of empty element */
+}
+
 
 .editable-row:hover .editable-cell-value-wrap {
     padding: 4px 11px;
     border: 1px solid #d9d9d9;
     border-radius: 2px;
+}
+.action-container {
+    display: flex;
+    gap: 20px; /* Adjust the gap as needed */
+    width: 100%;
+    align-items: center;
+}
+
+.action-icon {
+    cursor: pointer;
+    transition: transform 0.2s, color 0.2s;
+}
+
+.trash {
+    color: #8d8d8d; /* Initial color for trash */
+}
+
+.add {
+    color: #8d8d8d; /* Initial color for add */
+}
+
+.action-icon:hover {
+    transform: scale(1.1); /* Grow slightly on hover */
+}
+
+.trash:hover {
+    color: rgb(238, 130, 130); /* Change color to red on hover for trash */
+}
+
+.add:hover {
+    color: rgb(176, 244, 176); /* Change color to green on hover for add */
 }

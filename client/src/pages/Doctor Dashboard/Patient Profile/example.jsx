@@ -76,6 +76,12 @@ const medicines = [
     value: "Blue",
   },
 ];
+const dosages = [" cap", " pill", " kill", " mill"];
+const timings = [" cap", " pill", " kill", " mill"];
+const frquencies = [" cap", " pill", " kill", " mill"];
+const durations = [" cap", " pill", " kill", " mill"];
+const startFroms = [" cap", " pill", " kill", " mill"];
+
 const EditableContext = React.createContext(null);
 const EditableRow = ({ index, ...props }) => {
   const [form] = Form.useForm();
@@ -122,7 +128,7 @@ const App = ({ onDataEntered }) => {
     dataIndex,
     record,
     handleSave,
-    options,
+    result,
     inputRef,
     nextDataIndex,
     ...restProps
@@ -130,10 +136,23 @@ const App = ({ onDataEntered }) => {
     const [editing, setEditing] = useState(false);
     const [focusIndex, setFocusIndex] = useState(null);
     const form = useContext(EditableContext);
+    const [ooptions, setOoptions] = useState([]);
+    const handleSearch = (value) => {
+      let res = [];
+      if (!value || value.indexOf("@") >= 0) {
+        res = [];
+      } else {
+        res = result.map((domain) => ({
+          label: `${value} ${domain}`,
+          value: `${value} ${domain}`,
+        }));
+      }
+      setOoptions(res);
+    };
+
     useEffect(() => {
       if (editing) {
         inputRef.current.focus();
-        console.log(inputRef);
       }
     }, [editing]);
     const toggleEdit = () => {
@@ -163,23 +182,38 @@ const App = ({ onDataEntered }) => {
           }}
           name={dataIndex}
         >
-          <AutoComplete
-            notFoundContent={<Button onClick={showModal}>Add Option</Button>}
-            options={options}
-            ref={inputRef}
-            allowClear={true}
-            placeholder={title}
-            onCell={(record, dataIndex)}
-            filterOption={(inputValue, option) =>
-              option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !==
-              -1
-            }
-            onSelect={(value, option) => {
-              toggleEdit;
-              // Call the `save` function when an option is selected
-              save();
-            }}
-          />
+          {dataIndex === "medicine" ? ( // Conditional rendering based on dataIndex
+            <AutoComplete
+              className="autocomplete-input"
+              notFoundContent={<Button onClick={showModal}>Add Option</Button>}
+              options={result}
+              ref={inputRef}
+              allowClear={true}
+              placeholder={title}
+              filterOption={(inputValue, option) =>
+                option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !==
+                -1
+              }
+              onSelect={(value, option) => {
+                // Call the `save` function when an option is selected
+                save();
+              }}
+            />
+          ) : (
+            <AutoComplete
+              className="autocomplete-input"
+              notFoundContent={<Button onClick={showModal}>Add Option</Button>}
+              onSearch={handleSearch}
+              ref={inputRef}
+              allowClear={true}
+              placeholder={title}
+              options={ooptions}
+              onSelect={(value, option) => {
+                // Call the `save` function when an option is selected
+                save();
+              }}
+            />
+          )}
         </Form.Item>
       ) : (
         <div
@@ -213,58 +247,72 @@ const App = ({ onDataEntered }) => {
       dataIndex: "medicine",
       width: "25%",
       editable: true,
-      nextDataIndex: "dosage", // Next element's dataIndex
+      nextDataIndex: "dosage",
+      options: medicines, // Next element's dataIndex
     },
     {
       title: "Dosage",
       dataIndex: "dosage",
-      width: "12%",
+      width: "14%",
       editable: true,
-      nextDataIndex: "frequency", // Next element's dataIndex
+      nextDataIndex: "frequency",
+      options: dosages, // Next element's dataIndex
     },
     {
       title: "Frequency",
       dataIndex: "frequency",
-      width: "12%",
+      width: "14%",
       editable: true,
-      nextDataIndex: "timing", // Next element's dataIndex
+      nextDataIndex: "timing",
+      options: frquencies, // Next element's dataIndex
     },
     {
       title: "Timing",
       dataIndex: "timing",
-      width: "12%",
+      width: "14%",
       editable: true,
-      nextDataIndex: "duration", // Next element's dataIndex
+      nextDataIndex: "duration",
+      options: timings, // Next element's dataIndex
     },
     {
       title: "Duration",
       dataIndex: "duration",
-      width: "12%",
+      width: "14%",
       editable: true,
-      nextDataIndex: "instruction", // Next element's dataIndex
+      nextDataIndex: "startFrom",
+      options: durations, // Next element's dataIndex
     },
     {
-      title: "Instruction",
-      dataIndex: "instruction",
-      width: "12%",
+      title: "Start From",
+      dataIndex: "startFrom",
+      width: "14%",
       editable: true,
+      options: startFroms,
     },
     {
       title: "operation",
       dataIndex: "operation",
       render: (_, record) =>
-        dataSource.length >= 1 ? (
-          <Popconfirm
-            title="Sure to delete?"
-            onConfirm={() => handleDelete(record.key)}
-          >
-            <FontAwesomeIcon icon={faTrash} />
-          </Popconfirm>
-        ) : null,
+        dataSource.length > 1 ? (
+          <div className="action-container">
+            <Popconfirm
+              title="Sure to delete?"
+              onConfirm={() => handleDelete(record.key)}
+            >
+              <FontAwesomeIcon icon={faTrash} className="action-icon trash" />
+            </Popconfirm>
+            <FontAwesomeIcon
+              onClick={handleAdd}
+              icon={faPlus}
+              className="action-icon add"
+            />
+          </div>
+        ) : (
+          <FontAwesomeIcon onClick={handleAdd} icon={faPlus} />
+        ),
     },
   ];
   const handleAdd = () => {
-    handleSave(count - 1);
     const newData = {
       key: count,
       medicine: "",
@@ -310,7 +358,7 @@ const App = ({ onDataEntered }) => {
         nextDataIndex: col.nextDataIndex,
         title: col.title,
         inputRef: inputRef,
-        options: col.dataIndex === "medicine" ? medicines : "",
+        result: col.options,
 
         handleSave,
       }),
@@ -318,15 +366,6 @@ const App = ({ onDataEntered }) => {
   });
   return (
     <div>
-      <Button
-        onClick={handleAdd}
-        type="primary"
-        style={{
-          marginBottom: 16,
-        }}
-      >
-        Add a row
-      </Button>
       <Table
         components={components}
         rowClassName={() => "editable-row"}
@@ -334,6 +373,7 @@ const App = ({ onDataEntered }) => {
         dataSource={dataSource}
         columns={columns}
       />
+
       <Modal
         title="Title"
         open={open}
