@@ -13,7 +13,7 @@ import PatientList from "./pages/Doctor Dashboard/Patients/patientList";
 import DoctorSettings from "./pages/Doctor Dashboard/Settings/doctorSettings";
 import BookAppointmentDoctorPage1 from "./components/BookAppointment/bookAppointmentDoctorPage1";
 import BookAppointmentDoctorPage2 from "./components/BookAppointment/bookAppointmentDoctorPage2";
-import StartConsultation from "./pages/Doctor Dashboard/Patient Profile/startConsultation";
+import StartConsultation from "./pages/Doctor Dashboard/Prescription/startConsultation";
 
 export const routes = [
   {
@@ -86,7 +86,7 @@ export const routes = [
     protected: true,
   },
   {
-    path: "/doctor/patient-profile/start-consultation/:patientId",
+    path: "/doctor/Prescription/start-consultation/:patientId",
     element: <StartConsultation />,
     protected: true,
   },

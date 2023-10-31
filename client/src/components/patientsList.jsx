@@ -218,7 +218,7 @@ const PatientsList = () => {
       }
     } else {
       // Construct the URL for the patient's profile page
-      const profileUrl = `/doctor/patient-profile/start-consultation/${id}`;
+      const profileUrl = `/doctor/prescription/start-consultation/${id}`;
 
       // Open the URL in a new tab
       window.open(profileUrl, "_blank");

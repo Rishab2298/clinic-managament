@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 const vitalsSchema = new mongoose.Schema({
+  key: Number,
   pulseRate: String, // Pulse rate in BPM (Beats Per Minute)
   respiratoryRate: String, // Respiratory rate in BPM (Breaths Per Minute)
   bodyWeight: String, // Body weight in kilograms (kg)
@@ -13,6 +14,7 @@ const vitalsSchema = new mongoose.Schema({
 });
 
 const medicationSchema = new mongoose.Schema({
+  key: Number,
   medicine: String, // Name of the medicine
   dosage: String, // Dosage of the medicine
   frequency: String, // Frequency of medication (e.g., "Once a day," "Twice a day")
@@ -23,6 +25,7 @@ const medicationSchema = new mongoose.Schema({
 });
 
 const diagnosisSchema = new mongoose.Schema({
+  key: Number,
   diagnosis: String, // Name of the diagnosis
   duration: String, // Duration of the diagnosis (e.g., "1 week," "2 months")
   frequency: String, // Frequency of the diagnosis (e.g., "Once a day," "Twice a day")
@@ -31,6 +34,7 @@ const diagnosisSchema = new mongoose.Schema({
 });
 
 const symptomsSchema = new mongoose.Schema({
+  key: Number,
   symptom: String, // Name of the symptom
   duration: String, // Duration of the diagnosis (e.g., "1 week," "2 months")
   frequency: String, // Frequency of the diagnosis (e.g., "Once a day," "Twice a day")

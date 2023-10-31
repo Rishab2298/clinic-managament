@@ -86,7 +86,7 @@ const AddNewPatient = () => {
           } else if (buttonType === "saveAndStartConsultation") {
             console.log(res.data.data);
             navigate(
-              `/doctor/patient-profile/start-consultation/${res.data.data._id}`
+              `/doctor/prescription/start-consultation/${res.data.data._id}`
             );
           }
         } else {

@@ -5,6 +5,7 @@ const moment = require("moment");
 const userModel = require("../models/userModels");
 const doctorModel = require("../models/doctorModel");
 const appointmentModel = require("../models/appointmentModel");
+const prescriptionModel = require("../models/prescriptionModel");
 const dayjs = require("dayjs");
 
 const updateAppointmentStatusController = async (req, res) => {
@@ -181,6 +182,36 @@ const addNewPatientController = async (req, res) => {
     res.status(500).send({
       success: false,
       message: `Register Controller ${error.message}`,
+    });
+  }
+};
+
+const addPrescriptionController = async (req, res) => {
+  try {
+    const data = req.body;
+
+    // Create a new prescription and push the prescriptionid on both patent and doctor
+    const newPrescription = new prescriptionModel(data);
+    await newPrescription.save();
+    //Save the prescription id on doctors document
+    const doctor = await doctorModel.findById(data.doctor);
+    doctor.prescriptions.push(newPrescription._id);
+    await doctor.save();
+    //Save the prescription id on patients document
+    const patient = await patientModel.findById(data.patient);
+    patient.prescriptions.push(newPrescription._id);
+    await patient.save();
+    //Check if the prescription was saved successfully
+    res.status(201).send({
+      message: "Prescription Saved Succesfully",
+      success: true,
+      data: newPrescription,
+    });
+  } catch (error) {
+    console.error(error); // Log the error for debugging
+    res.status(500).send({
+      success: false,
+      message: "Error in saving prescription",
     });
   }
 };
@@ -488,4 +519,5 @@ module.exports = {
   getAllAppointmentsController,
   updateAppointmentStatusController,
   getPatientController,
+  addPrescriptionController,
 };

@@ -194,7 +194,7 @@ const ActionCell = ({ options, row, columnId }) => {
       if (res.data.success) {
         message.success(`Consultation ${status} Successfully`);
         if (status === "in progress") {
-          const profileUrl = `/doctor/patient-profile/start-consultation/${row.patientId}`;
+          const profileUrl = `/doctor/prescription/start-consultation/${row.patientId}`;
           window.open(profileUrl, "_blank");
         }
       } else {

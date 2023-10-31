@@ -32,9 +32,12 @@ const patientSchema = new mongoose.Schema(
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "doctors",
-        required: [false, "At least one doctor must be consulted"],
       },
     ],
+    prescriptions: {
+      type: Array,
+      default: [],
+    },
     age: {
       type: Number,
       required: [true, "Age is required"],

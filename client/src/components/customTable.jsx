@@ -130,7 +130,7 @@ const ActionCell = ({ options, row, columnId }) => {
 
   //function to be run when start consultation is clicked
   async function startConsultation(row) {
-    const profileUrl = `/doctor/patient-profile/${row.patientId}`;
+    const profileUrl = `/doctor/prescription/${row.patientId}`;
     try {
       dispatch(showLoading());
       const data = {

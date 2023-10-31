@@ -52,6 +52,10 @@ const doctorSchema = new mongoose.Schema(
       type: Array,
       default: [],
     },
+    prescriptions: {
+      type: Array,
+      default: [],
+    },
     appointments: {
       type: Array,
       default: [],

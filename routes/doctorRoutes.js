@@ -10,6 +10,7 @@ const {
   getAllAppointmentsController,
   updateAppointmentStatusController,
   getPatientController,
+  addPrescriptionController,
 } = require("../controllers/doctorCtrl");
 const authMiddleware = require("../middlewares/authMiddleware");
 
@@ -17,6 +18,9 @@ const router = express.Router();
 
 //POST Add new patient
 router.post("/add-new-patient", authMiddleware, addNewPatientController);
+
+//POST Add prescription
+router.post("/add-prescription", authMiddleware, addPrescriptionController);
 
 //Get all patients
 router.get("/get-all-patients", authMiddleware, getAllPatientsController);

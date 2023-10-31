@@ -97,14 +97,13 @@ const EditableRow = ({ index, ...props }) => {
 const App = ({ onDataEntered }) => {
   const [dataSource, setDataSource] = useState([
     {
-      key: 0,
-      medicine: "Something",
-      dosage: "String",
-      frequency: "2",
-      timing: "String",
-      duration: "String",
-      startFrom: "String",
-      instruction: "String",
+      key: 1,
+      medicine: "",
+      dosage: "",
+      frequency: "",
+      timing: "",
+      duration: "",
+      startFrom: "",
     },
   ]);
   const inputRef = useRef(null);
@@ -321,7 +320,6 @@ const App = ({ onDataEntered }) => {
       timing: "",
       duration: "",
       startFrom: "",
-      instruction: "",
     };
     setDataSource([...dataSource, newData]);
     setCount(count + 1);
