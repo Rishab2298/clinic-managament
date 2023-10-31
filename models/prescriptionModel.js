@@ -4,13 +4,13 @@ const vitalsSchema = new mongoose.Schema({
   key: Number,
   pulseRate: String, // Pulse rate in BPM (Beats Per Minute)
   respiratoryRate: String, // Respiratory rate in BPM (Breaths Per Minute)
-  bodyWeight: String, // Body weight in kilograms (kg)
+  weight: String, // Body weight in kilograms (kg)
   peripheralOxygenSaturation: String, // Peripheral oxygen saturation in percentage (%)
-  bodyTemperature: String, // Body temperature in degrees Celsius (°C)
+  temperature: String, // Body temperature in degrees Celsius (°C)
   bodyMassIndex: String, // Body Mass Index (BMI)
   bloodPressureSystolic: String, // Systolic blood pressure in mmHg
   bloodPressureDiastolic: String, // Diastolic blood pressure in mmHg
-  bodyHeight: String, // Body height in centimeters (cm)
+  height: String, // Body height in centimeters (cm)
 });
 
 const medicationSchema = new mongoose.Schema({
@@ -26,10 +26,10 @@ const medicationSchema = new mongoose.Schema({
 
 const diagnosisSchema = new mongoose.Schema({
   key: Number,
-  diagnosis: String, // Name of the diagnosis
-  duration: String, // Duration of the diagnosis (e.g., "1 week," "2 months")
-  frequency: String, // Frequency of the diagnosis (e.g., "Once a day," "Twice a day")
-  severity: String, // Severity of the diagnosis
+  diagnosis: String, // Name of the diagnosis@
+  duration: String, // Duration of the diagnosis (e.g., "1 week," "2 months")@
+  frequency: String, // Frequency of the diagnosis (e.g., "Once a day," "Twice a day")@
+  severity: String, // Severity of the diagnosis@
   detail: String, // Additional details about the diagnosis
 });
 

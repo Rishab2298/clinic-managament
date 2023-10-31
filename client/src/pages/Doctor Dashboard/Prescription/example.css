@@ -5,6 +5,24 @@
 .editable-cell-value-wrap {
     padding: 5px 12px;
     cursor: pointer;
+
+}
+
+.vitals-div-style {
+    display: "flex";
+    flex-direction: "column";
+}
+.vitals-form-style {
+    max-width: 1400;
+}
+.input-style {
+
+    line-Height: "50px";
+    padding: "20px 20px";
+    margin: "20px";
+}
+.gutter-box {
+    padding: 0 0 20px;
 }
 .editable-cell-value-wrap:empty::before {
     content: "\200B"; /* Add an invisible character to enable styling of empty element */

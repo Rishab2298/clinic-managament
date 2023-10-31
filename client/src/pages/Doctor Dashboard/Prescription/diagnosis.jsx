@@ -13,7 +13,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import "./example.css";
 
-const medicines = [
+const diagnosiss = [
   {
     value: "Burns Bay Road",
   },
@@ -76,11 +76,10 @@ const medicines = [
     value: "Blue",
   },
 ];
-const dosages = [" cap", " pill", " kill", " mill"];
-const timings = [" cap", " pill", " kill", " mill"];
+const severitys = [" cap", " pill", " kill", " mill"];
+
 const frquencies = [" cap", " pill", " kill", " mill"];
 const durations = [" cap", " pill", " kill", " mill"];
-const startFroms = [" cap", " pill", " kill", " mill"];
 
 const EditableContext = React.createContext(null);
 const EditableRow = ({ index, ...props }) => {
@@ -98,12 +97,11 @@ const App = ({ onDataEntered }) => {
   const [dataSource, setDataSource] = useState([
     {
       key: 1,
-      medicine: "",
-      dosage: "",
+      diagnosis: "",
+      severity: "",
       frequency: "",
-      timing: "",
+
       duration: "",
-      startFrom: "",
     },
   ]);
   const inputRef = useRef(null);
@@ -181,7 +179,7 @@ const App = ({ onDataEntered }) => {
           }}
           name={dataIndex}
         >
-          {dataIndex === "medicine" ? ( // Conditional rendering based on dataIndex
+          {dataIndex === "diagnosis" ? ( // Conditional rendering based on dataIndex
             <AutoComplete
               className="autocomplete-input"
               notFoundContent={<Button onClick={showModal}>Add Option</Button>}
@@ -242,52 +240,39 @@ const App = ({ onDataEntered }) => {
   };
   const defaultColumns = [
     {
-      title: "Medicine Name",
-      dataIndex: "medicine",
-      width: "25%",
+      title: "Diagnosis",
+      dataIndex: "diagnosis",
+      width: "30%",
       editable: true,
-      nextDataIndex: "dosage",
-      options: medicines, // Next element's dataIndex
+
+      options: diagnosiss, // Next element's dataIndex
     },
     {
-      title: "Dosage",
-      dataIndex: "dosage",
-      width: "14%",
+      title: "Severity",
+      dataIndex: "severity",
+      width: "20%",
       editable: true,
-      nextDataIndex: "frequency",
-      options: dosages, // Next element's dataIndex
+
+      options: severitys, // Next element's dataIndex
     },
     {
       title: "Frequency",
       dataIndex: "frequency",
-      width: "14%",
+      width: "20%",
       editable: true,
-      nextDataIndex: "timing",
+
       options: frquencies, // Next element's dataIndex
     },
-    {
-      title: "Timing",
-      dataIndex: "timing",
-      width: "14%",
-      editable: true,
-      nextDataIndex: "duration",
-      options: timings, // Next element's dataIndex
-    },
+
     {
       title: "Duration",
       dataIndex: "duration",
-      width: "14%",
+      width: "20%",
       editable: true,
-      nextDataIndex: "startFrom",
+
       options: durations, // Next element's dataIndex
     },
-    {
-      title: "Start From",
-      dataIndex: "startFrom",
-      width: "14%",
-      editable: true,
-      options: startFroms,
-    },
+
     {
       title: "operation",
       dataIndex: "operation",
@@ -314,12 +299,11 @@ const App = ({ onDataEntered }) => {
   const handleAdd = () => {
     const newData = {
       key: count,
-      medicine: "",
-      dosage: "",
+      diagnosis: "",
+      severity: "",
       frequency: "",
-      timing: "",
+
       duration: "",
-      startFrom: "",
     };
     setDataSource([...dataSource, newData]);
     setCount(count + 1);
